@@ -6,3 +6,21 @@
     <h1 class="display-4">Welcome</h1>
     <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
 </div>
+<div class=" align-content-center">
+    <button type="button" class="btn btn-info" onclick="clearInterval(timerId)">Stop updating</button>
+    <button type="button" class="btn btn-info" onclick="setInterval(() => getItems(), 4000);">Resume</button>
+</div>
+<table class="table table-dark align-content-center" id="dataTable">
+</table>
+
+
+
+<canvas id="coordinatePlot" style="height: 1000px;width: 1000px;border:1px solid black">
+    
+</canvas>
+<script src="/js/GetData.js" type="text/javascript"></script>
+<script type="text/javascript">
+    window.addEventListener("load", (event) => {
+        console.log("page is fully loaded");
+    });
+</script>

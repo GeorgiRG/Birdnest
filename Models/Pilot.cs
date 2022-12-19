@@ -1,14 +1,19 @@
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Birdnest.Models
 {
-    public class Sensor
+    public class Pilot
     {
-        public int SensorID { get; set; }
-        public float SensorLocationX { get; set; }
-        public float SensorLocationY { get; set; }
         [Required]
-        public string? Name { get; set; }
+        public string? PilotID { get; set; }
+        public string? FirstName { get; set; }
+        public string? LastName { get; set; }
+        public string? PhoneNumber { get; set; }
+        public string? Email { get; set; }
+        [AllowNull]
+        public Violation Violations { get; set; }
 
     }
 }

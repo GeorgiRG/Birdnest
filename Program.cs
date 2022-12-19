@@ -1,7 +1,32 @@
+using Birdnest.Data;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
+using Quartz;
+using Birdnest.Jobs;
+
+
+
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddDbContext<BirdnestContext>();
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddQuartz(q =>
+{
+    q.UseMicrosoftDependencyInjectionJobFactory();
+    var jobKey = new JobKey("CollectSensorData");
+    q.AddJob<CollectSensorData>(opts => opts.WithIdentity(jobKey));
+
+    q.AddTrigger(opts => opts   
+        .ForJob(jobKey)
+        .WithIdentity("CollectSensorData-trigger")
+        .WithCronSchedule("*/2 * * * * ?")
+    );
+});
+builder.Services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
 
 var app = builder.Build();
 
@@ -23,5 +48,4 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.Run();
