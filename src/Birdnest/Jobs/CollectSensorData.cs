@@ -1,13 +1,9 @@
 ﻿using Quartz;
-using System.Net.Http;
-using System.Runtime.CompilerServices;
-using System.Security.AccessControl;
 using System.Xml;
-using Birdnest.Data;
 using Microsoft.EntityFrameworkCore;
-using Birdnest.SensorTools;
+using Birdnest.Tools;
 using Birdnest.Models;
-using Birdnest.ViewModels;
+using Birdnest.Data;
 
 namespace Birdnest.Jobs
 {
@@ -17,14 +13,14 @@ namespace Birdnest.Jobs
         {
             BaseAddress = new Uri("http://assignments.reaktor.com/birdnest/")
         };
-        private readonly BirdnestContext db = new ();
+        private readonly BirdnestContext db = new();
 
 
         public async Task Execute(IJobExecutionContext context)
         {
             List<Sensor> sensors = await db.Sensors.ToListAsync();
             string sensorData = await client.GetStringAsync("drones");
-            XmlDocument xmlDoc = new ();
+            XmlDocument xmlDoc = new();
             xmlDoc.LoadXml(sensorData);
             XmlNodeList droneList = xmlDoc.GetElementsByTagName("drone");
 
@@ -71,7 +67,7 @@ namespace Birdnest.Jobs
 
                         }
                         //create new violation and pilot
-                        else 
+                        else
                         {
                             Violation violation = new()
                             {
@@ -91,7 +87,7 @@ namespace Birdnest.Jobs
                     }
                     else
                     {
-                        Console.WriteLine("No violation" + ", " + drone["positionX"]!   .InnerText.ToString() + ", " + drone["positionY"]!.InnerText.ToString());
+                        Console.WriteLine("No violation" + ", " + drone["positionX"]!.InnerText.ToString() + ", " + drone["positionY"]!.InnerText.ToString());
                     }
                 }
             }
@@ -105,7 +101,7 @@ namespace Birdnest.Jobs
                 db.SaveChanges();
             }
             db.Dispose();
-                
+
         }
     }
 }

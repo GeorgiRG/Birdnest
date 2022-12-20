@@ -1,11 +1,6 @@
-using Birdnest.Data;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
 using Quartz;
 using Birdnest.Jobs;
-
-
-
+using Birdnest.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -49,3 +44,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();
+
+//JIT 
+//COMPILING ONCE AND ALL PLATFORMS

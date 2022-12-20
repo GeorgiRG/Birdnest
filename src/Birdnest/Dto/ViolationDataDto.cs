@@ -1,8 +1,8 @@
 ﻿//Merges Pilot and Violation data
 
-namespace Birdnest.DTOs
+namespace Birdnest.Dto
 {
-    public class ViolationDataDTO
+    public class ViolationDataDto
     {
         public string? PilotID { get; set; }
         public string? FirstName { get; set; }
