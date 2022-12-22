@@ -1,5 +1,6 @@
 ﻿using Birdnest.Data;
 using Birdnest.Dto;
+using Birdnest.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,32 +10,17 @@ namespace Birdnest.Controllers.API
     [ApiController]
     public class ViolationsDataController : ControllerBase
     {
-        private readonly BirdnestContext _context;
+        private readonly IViolationService _collectData;
 
-        public ViolationsDataController(BirdnestContext context)
+        public ViolationsDataController(IViolationService collectData)
         {
-            _context = context;
+            _collectData = collectData;
         }
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ViolationDataDto>>> GetTodoItems()
+        public async Task<ActionResult<IEnumerable<ViolationDataDto>>> GetViolations()
         {
-            List<ViolationDataDto> dataDTO = await _context.Pilots
-                                    .Join(_context.Violations, p => p.PilotID, v => v.PilotID, (p, v) =>
-                                        new ViolationDataDto
-                                        {
-                                            PilotID = p.PilotID,
-                                            FirstName = p.FirstName,
-                                            LastName = p.LastName,
-                                            PhoneNumber = p.PhoneNumber,
-                                            Email = p.Email,
-                                            Distance = v.Distance,
-                                            ViolationLocationX = v.ViolationLocationX,
-                                            ViolationLocationY = v.ViolationLocationY,
-                                            Time = v.Time.ToLocalTime().ToString("dd/MM/yyyy HH':'mm':'ss"),
-                                            Duration = v.Duration
-
-                                        }).OrderBy(dto => dto.Distance).ToListAsync();
-            return dataDTO;
+            return await _collectData.CollectViolData();
+            
         }
     }
 }

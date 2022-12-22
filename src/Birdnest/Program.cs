@@ -1,14 +1,13 @@
 using Quartz;
 using Birdnest.Jobs;
 using Birdnest.Data;
+using Birdnest.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddDbContext<BirdnestContext>();
-
-// Add services to the container.
+builder.Services.AddScoped<IViolationService, CollectData>();
 builder.Services.AddControllersWithViews();
-
 builder.Services.AddQuartz(q =>
 {
     q.UseMicrosoftDependencyInjectionJobFactory();
@@ -44,6 +43,3 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 app.Run();
-
-//JIT 
-//COMPILING ONCE AND ALL PLATFORMS
